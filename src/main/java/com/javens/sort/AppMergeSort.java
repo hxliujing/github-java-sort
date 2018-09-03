@@ -13,47 +13,50 @@ import com.javens.SortPrint;
  */
 public class AppMergeSort {
     public static void main(String[] args) {
-        int a[] = new int[]{12, 2, 44, 4};
+        int a[] = new int[]{12, 2, 44, 4,5};
         new AppMergeSort().mergeSort(a, 0, a.length - 1);
         SortPrint.print(a);
     }
 
     private void mergeSort(int[] a, int left, int right) {
-        int t = 1;// 每组元素个数
-        int size = right - left + 1;
-        while (t < size) {
-            int s = t;// 本次循环每组元素个数
-            t = 2 * s;
-            int i = left;
-            while (i + (t - 1) < size) {
-                merge(a, i, i + (s - 1), i + (t - 1));
-                i += t;
-            }
-            if (i + (s - 1) < right)
-                merge(a, i, i + (s - 1), right);
+        int center;
+        if(left < right){
+            //找出中间索引
+            center = (left + right)/2;
+            //对左边数组进行递归
+            mergeSort(a,0,center);
+            //对右边数组进行递归
+            mergeSort(a,center + 1,right);
+            //合并
+            merge(a,left,center,right);
         }
     }
 
-    private static void merge(int[] data, int p, int q, int r) {
-        int[] B = new int[data.length];
-        int s = p;
-        int t = q + 1;
-        int k = p;
-        while (s <= q && t <= r) {
-            if (data[s] <= data[t]) {
-                B[k] = data[s];
-                s++;
+    private static void merge(int[] data, int left, int center, int right) {
+        int[] tempArr = new int[data.length];
+        int mid = center + 1;
+        //third 记录中间数组的索引
+        int third = left;
+        int temp = left;
+        while (left <= center && mid <= right) {
+            //从左右两个数组找出最小的数存入tempArr数组
+            if (data[left] <= data[mid]) {
+                tempArr[third++] = data[left++];
             } else {
-                B[k] = data[t];
-                t++;
+                tempArr[third++] = data[mid++];
             }
-            k++;
         }
-        if (s == q + 1)
-            B[k++] = data[t++];
-        else
-            B[k++] = data[s++];
-        for (int i = p; i <= r; i++)
-            data[i] = B[i];
+        //剩余部分依次放入中间数组
+        while(mid <=right){
+            tempArr[third++] = data[mid++];
+        }
+        while(left <= center){
+            tempArr[third++] =  data[left++];
+        }
+        //将中间数组中的内容复制回原数组
+        while(temp <= right){
+            data[temp] = tempArr[temp ++ ];
+        }
+
     }
 }

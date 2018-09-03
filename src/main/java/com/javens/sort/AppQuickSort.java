@@ -12,7 +12,7 @@ import com.javens.SortPrint;
  */
 public class AppQuickSort {
     public static void main(String[] args) {
-        int a[] = new int[]{12,2,44,4};
+        int a[] = new int[]{12, 2, 44, 4,5};
         new AppQuickSort().quickSort(a,0,a.length-1);
         SortPrint.print(a);
     }
